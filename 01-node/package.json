@@ -1,0 +1,14 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "Node JS Class ",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Chris Keen <christopher.keen@gmail.com> (http://keenwebconcepts.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "purdy": "^1.4.1"
+  }
+}
