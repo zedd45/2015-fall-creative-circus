@@ -36,13 +36,11 @@ server.register(Inert, function (err) {
         throw err;
     }
 
-
     server.route({
         method: 'GET',
         path: '/favicon.ico',
-        handler: function (request, reply) {
-
-            reply.file( __dirname + '/public/favicon.ico');
+        handler: {
+            file: __dirname + '/public/favicon.ico'
         }
     });
 
