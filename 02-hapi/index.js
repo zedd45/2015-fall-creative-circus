@@ -44,4 +44,15 @@ server.register(Inert, function (err) {
         }
     });
 
+    server.route({
+        method: 'GET',
+        path: '/assets/{filePath*}',
+        handler: {
+            directory: {
+                path: __dirname + '/public',
+                listing: true
+            }
+        }
+    });
+
 });
