@@ -9,3 +9,21 @@ server.start(function () {
 
     console.log('Server is now running at:', server.info.uri);
 });
+
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: function (request, reply) {
+
+        reply('hello root!');
+    }
+});
+
+server.route({
+    method: 'GET',
+    path: '/{uriSegment}',
+    handler: function (request, reply) {
+
+        reply('you visited: ' + request.params.uriSegment || request.path);
+    }
+});
