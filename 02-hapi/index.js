@@ -25,7 +25,8 @@ server.route({
     path: '/{uriSegment}',
     handler: function (request, reply) {
 
-        reply('you visited: ' + request.params.uriSegment || request.path);
+        var response = encodeURIComponent(request.params.uriSegment || request.path);
+        reply('you visited: ' + response);
     }
 });
 
