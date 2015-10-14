@@ -57,3 +57,14 @@ server.register(Inert, function (err) {
     });
 
 });
+
+
+server.route({
+    method: 'GET',
+    path: '/api/local/{jsonFile*}',
+    handler: function (request, reply) {
+
+        var filePath = [__dirname, 'fixtures', encodeURIComponent(request.params.jsonFile)].join("/");
+        reply.file(filePath);
+    }
+});
