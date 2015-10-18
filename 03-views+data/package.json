@@ -1,6 +1,6 @@
 {
-  "name": "hapi-week-two",
-  "version": "1.0.0",
+  "name": "hapi-week-three",
+  "version": "1.1.0",
   "description": "week two of node class",
   "main": "index.js",
   "scripts": {
