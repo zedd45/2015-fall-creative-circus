@@ -5,6 +5,7 @@ var Hoek = require('hoek');
 var Inert = require('inert');
 
 var Files = require('./lib/files');
+var Misc = require('./lib/misc');
 
 
 const PORT = 8080;
@@ -20,6 +21,9 @@ server.register([{
     register: Inert,
     options: {}
 }, {
+    register: Misc,
+    options: {}
+}, {
     register: Files,
     options: {}
 }], function (err) {
@@ -32,26 +36,6 @@ server.register([{
 
         // server must have a callback
     });
-});
-
-
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-
-        reply('hello root!');
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/{uriSegment}',
-    handler: function (request, reply) {
-
-        var response = encodeURIComponent(request.params.uriSegment || request.path);
-        reply('you visited: ' + response);
-    }
 });
 
 
