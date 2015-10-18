@@ -1,17 +1,34 @@
+var Blipp = require('blipp');
 var Fs = require('fs');
 var Hapi = require('hapi');
 var Hoek = require('hoek');
 var Inert = require('inert');
+
 
 const PORT = 8080;
 
 var server = new Hapi.Server();
 server.connection({ port: PORT });
 
-server.start(function () {
 
-    console.log('Server is now running at:', server.info.uri);
+server.register([{
+    register: Blipp,
+    options: {}
+}, {
+    register: Inert,
+    options: {}
+}], function (err) {
+
+    if (err) {
+        throw err;
+    }
+
+    server.start(function () {
+
+        // server must have a callback
+    });
 });
+
 
 server.route({
     method: 'GET',
@@ -32,34 +49,24 @@ server.route({
     }
 });
 
-
-server.register(Inert, function (err) {
-
-    if (err) {
-        throw err;
+server.route({
+    method: 'GET',
+    path: '/favicon.ico',
+    handler: {
+        file: __dirname + '/public/favicon.ico'
     }
-
-    server.route({
-        method: 'GET',
-        path: '/favicon.ico',
-        handler: {
-            file: __dirname + '/public/favicon.ico'
-        }
-    });
-
-    server.route({
-        method: 'GET',
-        path: '/assets/{filePath*}',
-        handler: {
-            directory: {
-                path: __dirname + '/public',
-                listing: true
-            }
-        }
-    });
-
 });
 
+server.route({
+    method: 'GET',
+    path: '/assets/{filePath*}',
+    handler: {
+        directory: {
+            path: __dirname + '/public',
+            listing: true
+        }
+    }
+});
 
 server.route({
     method: 'GET',
