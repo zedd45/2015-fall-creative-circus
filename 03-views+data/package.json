@@ -1,0 +1,24 @@
+{
+  "name": "hapi-week-two",
+  "version": "1.0.0",
+  "description": "week two of node class",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "nodemon index.js",
+    "lint": "./node_modules/.bin/lab -L -d"
+  },
+  "author": "Chris Keen <christopher.keen@gmail.com> (http://keenwebconcepts.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^10.4.1",
+    "hoek": "^2.16.3",
+    "inert": "^3.1.0"
+  },
+  "devDependencies": {
+    "json": "^9.0.3",
+    "lab": "^6.2.0",
+    "nodemon": "^1.7.1",
+    "purdy": "^1.4.1"
+  }
+}
