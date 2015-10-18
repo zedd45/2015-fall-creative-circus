@@ -1,5 +1,13 @@
+var Boom = require('boom');
 var Fs = require('fs');
 var Hoek = require('hoek');
+var Url = require('url');
+var Wreck = require('wreck');
+
+const TRULIA_HOST = "http://api.trulia.com";
+const TRULIA_PATH = "webservices.php";
+const TRULIA_API_KEY = process.env.TRULIA_API_KEY;
+
 
 exports.register = function (server, options, next) {
 
@@ -33,6 +41,44 @@ exports.register = function (server, options, next) {
             });
 
             reply(transformedJson);
+        }
+    });
+
+
+    server.route({
+        method: 'GET',
+        path: '/trulia/cities',
+        handler: function (request, reply) {
+
+            var uri = Url.format({
+                hostname: TRULIA_HOST,
+                pathname: TRULIA_PATH,
+                query:{
+                    "library": "LocationInfo",
+                    "function": "getCitiesInState",
+                    "state": "GA",
+                    "apikey": TRULIA_API_KEY,
+                }
+            });
+
+            var wreckOptions = {
+                 timeout: 1500,
+                 json: true,
+            };
+
+            require('purdy')(wreckOptions);
+
+            Wreck.get(uri, wreckOptions, function (err, payload) {
+
+                if (err) {
+                    var msg = 'problem reading from Trulia:';
+                    var badGateway = Boom.badGateway(msg, {err: err});
+                    console.error(msg, err);
+                    return reply(badGateway);
+                }
+
+                return reply(payload);
+            });
         }
     });
 
