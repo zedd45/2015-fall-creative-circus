@@ -4,6 +4,8 @@ var Hapi = require('hapi');
 var Hoek = require('hoek');
 var Inert = require('inert');
 
+var Files = require('./lib/files');
+
 
 const PORT = 8080;
 
@@ -16,6 +18,9 @@ server.register([{
     options: {}
 }, {
     register: Inert,
+    options: {}
+}, {
+    register: Files,
     options: {}
 }], function (err) {
 
@@ -49,24 +54,6 @@ server.route({
     }
 });
 
-server.route({
-    method: 'GET',
-    path: '/favicon.ico',
-    handler: {
-        file: __dirname + '/public/favicon.ico'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/assets/{filePath*}',
-    handler: {
-        directory: {
-            path: __dirname + '/public',
-            listing: true
-        }
-    }
-});
 
 server.route({
     method: 'GET',
