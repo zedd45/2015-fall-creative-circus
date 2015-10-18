@@ -30,6 +30,29 @@ exports.register = function (server, options, next) {
         }
     });
 
+    server.route({
+        method: 'GET',
+        path: '/fb',
+        handler: function (request, reply) {
+
+            var fbdata = {};
+
+            // get a copy of the fb data
+            server.inject('/api/local/fb', function (res) {
+
+                fbdata.result = res.result;
+
+                fbdata = Hoek.merge(fbdata, {
+                    title: 'using fixture data with views',
+                });
+
+                require('purdy')(fbdata);
+
+                reply.view('fb', fbdata);
+            });
+        }
+    });
+
 
     next();
 };
