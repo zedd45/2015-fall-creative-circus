@@ -15,7 +15,10 @@ server.connection({ port: PORT });
 
 server.register([{
     register: API,
-    options: {}
+    options: {},
+    routes: {
+        prefix: "/api"
+    }
 }, {
     register: Blipp,
     options: {}

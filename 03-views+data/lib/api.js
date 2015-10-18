@@ -5,7 +5,7 @@ exports.register = function (server, options, next) {
 
     server.route({
         method: 'GET',
-        path: '/api/local/{jsonFile*}',
+        path: '/local/{jsonFile*}',
         handler: function (request, reply) {
 
             var filePath = [__dirname, 'fixtures', '..', encodeURIComponent(request.params.jsonFile)].join('/');
@@ -15,7 +15,7 @@ exports.register = function (server, options, next) {
 
     server.route({
         method: 'GET',
-        path: '/api/local/fb',
+        path: '/local/fb',
         handler: function (request, reply) {
 
             var rawFile = Fs.readFileSync(__dirname + '/../fixtures/facebook.json', 'utf-8');
