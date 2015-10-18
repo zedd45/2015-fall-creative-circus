@@ -12,9 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "blipp": "^2.3.0",
+    "handlebars": "^4.0.3",
     "hapi": "^10.4.1",
     "hoek": "^2.16.3",
-    "inert": "^3.1.0"
+    "inert": "^3.1.0",
+    "vision": "^3.0.0"
   },
   "devDependencies": {
     "json": "^9.0.3",

@@ -1,10 +1,10 @@
 var Blipp = require('blipp');
 var Hapi = require('hapi');
 
-
 var API = require('./lib/api');
 var Files = require('./lib/files');
 var Misc = require('./lib/misc');
+var Views = require('./lib/views');
 
 
 const PORT = 8080;
@@ -28,6 +28,12 @@ server.register([{
 }, {
     register: Files,
     options: {}
+}, {
+    register: Views,
+    options: {},
+    routes: {
+        prefix: "/views"
+    }
 }], function (err) {
 
     if (err) {
