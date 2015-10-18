@@ -1,6 +1,14 @@
+var Inert = require('inert');
 
 
 exports.register = function (server, options, next) {
+
+    server.register(Inert, function (err) {
+
+        if (err) {
+            throw err;
+        }
+    });
 
     server.route({
         method: 'GET',
@@ -26,5 +34,5 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'static-files',
-    version: '1.0.0'
+    version: '1.0.1'
 };

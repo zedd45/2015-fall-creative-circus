@@ -1,6 +1,6 @@
 var Blipp = require('blipp');
 var Hapi = require('hapi');
-var Inert = require('inert');
+
 
 var API = require('./lib/api');
 var Files = require('./lib/files');
@@ -21,9 +21,6 @@ server.register([{
     }
 }, {
     register: Blipp,
-    options: {}
-}, {
-    register: Inert,
     options: {}
 }, {
     register: Misc,
