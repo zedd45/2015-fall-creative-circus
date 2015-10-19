@@ -1,6 +1,7 @@
 var Boom = require('boom');
 var Fs = require('fs');
 var Hoek = require('hoek');
+var Joi = require('joi');
 var Url = require('url');
 var Wreck = require('wreck');
 
@@ -42,11 +43,19 @@ exports.register = function (server, options, next) {
         }
     });
 
-    // https://gist.github.com/jasonrudolph/6065289#file-01-trending-repos-md
 
     server.route({
         method: 'GET',
-        path: '/github/repos/hapi',
+        path: '/github/repos/',
+        config: {
+            validate: {
+                query: Joi.object({
+                    q: Joi.string().required().description('search keywords, as well as any qualifiers').example('https://developer.github.com/v3/search/#search-repositories'),
+                    sort: Joi.string().optional().allow(['','stars', 'forks', 'updated']).default(''),
+                    order: Joi.string().optional().allow(['asc', 'desc'])
+                }).with('order', 'sort')
+            }
+        },
         handler: function (request, reply) {
 
             var uri = Url.format({
@@ -56,11 +65,8 @@ exports.register = function (server, options, next) {
                 query:{
                     q: "hapijs",
                     sort: "stars"
-
                 }
             });
-
-            console.log('uri: ', uri)
 
             var wreckOptions = {
                  timeout: 1500,
