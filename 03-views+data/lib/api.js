@@ -4,9 +4,7 @@ var Hoek = require('hoek');
 var Url = require('url');
 var Wreck = require('wreck');
 
-const TRULIA_HOST = "http://api.trulia.com";
-const TRULIA_PATH = "webservices.php";
-const TRULIA_API_KEY = process.env.TRULIA_API_KEY;
+const GITHUB_HOST = "api.github.com";
 
 
 exports.register = function (server, options, next) {
@@ -44,40 +42,53 @@ exports.register = function (server, options, next) {
         }
     });
 
+    // https://gist.github.com/jasonrudolph/6065289#file-01-trending-repos-md
 
     server.route({
         method: 'GET',
-        path: '/trulia/cities',
+        path: '/github/repos/hapi',
         handler: function (request, reply) {
 
             var uri = Url.format({
-                hostname: TRULIA_HOST,
-                pathname: TRULIA_PATH,
+                protocol: "https",
+                hostname: GITHUB_HOST,
+                pathname: "search/repositories",
                 query:{
-                    "library": "LocationInfo",
-                    "function": "getCitiesInState",
-                    "state": "GA",
-                    "apikey": TRULIA_API_KEY,
+                    q: "hapijs",
+                    sort: "stars"
+
                 }
             });
+
+            console.log('uri: ', uri)
 
             var wreckOptions = {
                  timeout: 1500,
                  json: true,
+                 headers: {
+                    // required for Github; https://developer.github.com/v3/#user-agent-required
+                    "User-Agent": "zedd45"
+                 }
+
             };
 
-            require('purdy')(wreckOptions);
-
-            Wreck.get(uri, wreckOptions, function (err, payload) {
+            Wreck.get(uri, wreckOptions, function (err, response, payload) {
 
                 if (err) {
-                    var msg = 'problem reading from Trulia:';
+                    var msg = 'problem reading from Github:';
                     var badGateway = Boom.badGateway(msg, {err: err});
                     console.error(msg, err);
                     return reply(badGateway);
                 }
 
-                return reply(payload);
+                if (response.statusCode >= 400) {
+                    var msg = 'Github returned an HTTP status code corresponding to an error:';
+                    var httpError = Boom.create(response.statusCode, msg, {payload: payload});
+                    console.error(msg);
+                    return reply(httpError);
+                }
+
+                return reply(payload).code(response.statusCode);
             });
         }
     });
