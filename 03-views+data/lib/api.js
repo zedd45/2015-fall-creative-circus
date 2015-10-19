@@ -99,5 +99,5 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'api-routes',
-    version: '1.0.0'
+    version: '1.1.0'
 };
