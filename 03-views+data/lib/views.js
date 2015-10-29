@@ -6,15 +6,14 @@ exports.register = function (server, options, next) {
     server.register(Vision, function (err) {
 
         Hoek.assert(!err, err);
+    });
 
-        server.views({
-            engines: {
-                hbs: require('handlebars')
-            },
-            relativeTo: [__dirname, '..'].join('/'),
-            path: 'templates'
-        });
-
+    server.views({
+        engines: {
+            hbs: require('handlebars')
+        },
+        relativeTo: [__dirname, '..'].join('/'),
+        path: 'templates'
     });
 
 
@@ -46,8 +45,6 @@ exports.register = function (server, options, next) {
                     title: 'using fixture data with views',
                 });
 
-                require('purdy')(fbdata);
-
                 reply.view('fb', fbdata);
             });
         }
@@ -60,5 +57,5 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'server-views',
-    version: '1.0.0'
+    version: '1.0.1'
 };
