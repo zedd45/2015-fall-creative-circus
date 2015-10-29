@@ -14,7 +14,7 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/favicon.ico',
         handler: {
-            file: [__dirname, '..', '/public/favicon.ico'].join('/')
+            file: [__dirname, '..', 'public/favicon.ico'].join('/')
         }
     });
 
@@ -34,5 +34,5 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'static-files',
-    version: '1.0.1'
+    version: '1.0.2'
 };
