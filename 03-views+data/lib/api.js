@@ -50,7 +50,7 @@ exports.register = function (server, options, next) {
         config: {
             validate: {
                 query: Joi.object({
-                    q: Joi.string().required().description('search keywords, as well as any qualifiers').example('https://developer.github.com/v3/search/#search-repositories'),
+                    q: Joi.string().required().min(2).description('search keywords, as well as any qualifiers').example('https://developer.github.com/v3/search/#search-repositories'),
                     sort: Joi.string().optional().allow(['','stars', 'forks', 'updated']).default(''),
                     order: Joi.string().optional().allow(['asc', 'desc'])
                 }).with('order', 'sort')
@@ -63,19 +63,19 @@ exports.register = function (server, options, next) {
                 hostname: GITHUB_HOST,
                 pathname: "search/repositories",
                 query:{
-                    q: "hapijs",
-                    sort: "stars"
+                    q: encodeURIComponent(request.query.q),
+                    sort: encodeURIComponent(request.query.sort),
+                    order: encodeURIComponent(request.query.order)
                 }
             });
 
             var wreckOptions = {
                  timeout: 1500,
-                 json: true,
+                 json: 'force',
                  headers: {
                     // required for Github; https://developer.github.com/v3/#user-agent-required
                     "User-Agent": "zedd45"
                  }
-
             };
 
             Wreck.get(uri, wreckOptions, function (err, response, payload) {
