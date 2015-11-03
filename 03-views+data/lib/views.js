@@ -16,7 +16,6 @@ exports.register = function (server, options, next) {
         path: 'templates'
     });
 
-
     server.route({
         method: 'GET',
         path: '/example',
