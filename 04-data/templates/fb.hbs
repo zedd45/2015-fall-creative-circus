@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+
+<body>
+    {{#each result}}
+      <div class="panel panel-default">
+        <div class="panel-heading">{{name}} says:</div>
+        <div class="panel-body">
+            {{message}}
+        </div>
+        <div class="panel-footer">
+          <a href="{{like}}">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            <span class="sr-only">like this</span>
+          </a>
+        </div>
+      </div>
+    {{/each}}
+  </h3>
+</body>
+</html>
