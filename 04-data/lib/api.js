@@ -73,7 +73,7 @@ exports.register = function (server, options, next) {
                  json: 'force',
                  headers: {
                     // required for Github; https://developer.github.com/v3/#user-agent-required
-                    "User-Agent": "zedd45"
+                    "User-Agent": "GITHUB_USERNAME"
                  }
             };
 
@@ -100,6 +100,7 @@ exports.register = function (server, options, next) {
             });
         }
     });
+
 
     next();
 };

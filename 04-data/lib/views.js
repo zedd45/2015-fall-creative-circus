@@ -50,11 +50,29 @@ exports.register = function (server, options, next) {
     });
 
 
+    server.route({
+        method: 'GET',
+        path: '/github/repos',
+        handler: function (request, reply) {
+
+            var q = encodeURIComponent(request.query.q);
+
+            server.inject('/api/github/repos/?q=' + q, function (res) {
+
+                reply.view('github-repos', Hoek.merge(res.result, {
+                    title: 'Github Repos for query: ' + q,
+                    query: q
+                }));
+            });
+        }
+    });
+
+
     next();
 };
 
 
 exports.register.attributes = {
     name: 'server-views',
-    version: '1.0.1'
+    version: '1.1.1'
 };

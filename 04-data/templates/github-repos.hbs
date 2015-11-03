@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="well">
+    <h1> {{total_count}} Github Results for {{query}}</h1>
+  </div>
+    {{#each items}}
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          {{name}}
+
+          <span class="badge pull-right">
+            <span class="glyphicon glyphicon-star">
+              <span class="sr-only">Stars</span>
+            </span>
+            {{stargazers_count}}
+          </span>
+        </div>
+        <div class="panel-body">
+          {{description}}
+        </div>
+      </div>
+    {{/each}}
+  </h3>
+</body>
+</html>
