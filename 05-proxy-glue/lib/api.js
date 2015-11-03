@@ -11,6 +11,11 @@ const GITHUB_HOST = "api.github.com";
 
 exports.register = function (server, options, next) {
 
+    server.register(H2o2, function (err) {
+
+        Hoek.assert(!err, err);
+    });
+
     server.route({
         method: 'GET',
         path: '/local/{jsonFile*}',
@@ -103,11 +108,24 @@ exports.register = function (server, options, next) {
     });
 
 
+    server.route({
+        method: 'GET',
+        path: '/json-placeholder/',
+        handler: {
+            proxy: {
+                host: 'jsonplaceholder.typicode.com',
+                port: '80',
+                protocol: 'http'
+            }
+        }
+    });
+
+
     next();
 };
 
 
 exports.register.attributes = {
     name: 'api-routes',
-    version: '1.1.0'
+    version: '2.0.0'
 };
