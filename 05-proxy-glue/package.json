@@ -13,6 +13,7 @@
   "dependencies": {
     "blipp": "^2.3.0",
     "boom": "^2.9.0",
+    "glue": "^2.4.0",
     "good": "^6.4.0",
     "good-console": "^5.2.0",
     "h2o2": "^4.0.2",

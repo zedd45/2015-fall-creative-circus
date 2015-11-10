@@ -1,14 +1,7 @@
-var H2o2 = require('h2o2');
 var Hoek = require('hoek');
-var Vision = require('vision');
 
 
 exports.register = function (server, options, next) {
-
-    server.register([Vision, H2o2], function (err) {
-
-        Hoek.assert(!err, err);
-    });
 
     server.views({
         engines: {
@@ -87,5 +80,6 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'server-views',
-    version: '2.0.0'
+    version: '2.0.0',
+    dependencies: 'vision'
 };
