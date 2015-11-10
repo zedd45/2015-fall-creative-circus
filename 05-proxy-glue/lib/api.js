@@ -1,6 +1,5 @@
 var Boom = require('boom');
 var Fs = require('fs');
-var H2o2 = require('h2o2');
 var Hoek = require('hoek');
 var Joi = require('joi');
 var Url = require('url');
@@ -8,13 +7,12 @@ var Wreck = require('wreck');
 
 const GITHUB_HOST = "api.github.com";
 
+var internals = {};
+
 
 exports.register = function (server, options, next) {
 
-    server.register(H2o2, function (err) {
-
-        Hoek.assert(!err, err);
-    });
+    server.dependency('h2o2', internals.assignRoutes);
 
     server.route({
         method: 'GET',
@@ -107,20 +105,6 @@ exports.register = function (server, options, next) {
         }
     });
 
-
-    server.route({
-        method: 'GET',
-        path: '/json-placeholder/',
-        handler: {
-            proxy: {
-                host: 'jsonplaceholder.typicode.com',
-                port: '80',
-                protocol: 'http'
-            }
-        }
-    });
-
-
     next();
 };
 
@@ -128,4 +112,54 @@ exports.register = function (server, options, next) {
 exports.register.attributes = {
     name: 'api-routes',
     version: '2.0.0'
+};
+
+
+internals.assignRoutes = function (server, next) {
+
+    // server.route({
+    //     method: 'GET',
+    //     path: '/json-placeholder/posts/1',
+    //     handler: {
+    //         proxy: {
+    //             host: 'jsonplaceholder.typicode.com',
+    //             port: '80',
+    //             protocol: 'http'
+    //         }
+    //     }
+    // });
+
+    server.route({
+        method: 'GET',
+        path: '/json-placeholder/{segments*}',
+        handler: {
+            proxy: {
+                mapUri: function (request, callback) {
+
+                    var baseUri = 'http://jsonplaceholder.typicode.com/';
+                    var proxyPath = request.params.segments;
+                    var fullUrl = baseUri + proxyPath;
+
+                    server.log('proxy', {url: fullUrl});
+                    callback(null, fullUrl);
+                },
+                onResponse: function (err, res, request, reply, settings, ttl) {
+
+                    server.log('proxy', { what: 'received response from ' + request.path });
+
+                    Wreck.read(res, { json: true }, function (err, payload) {
+
+                        if (err) {
+                            server.log('error', { msg: error });
+                        }
+
+                        // we can transform the payload here
+                        reply(payload);
+                    });
+                }
+            }
+        }
+    });
+
+    next();
 };
