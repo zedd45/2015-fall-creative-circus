@@ -32,6 +32,14 @@ var manifest = {
                 prefix: "/api"
             }
         }]
+    }, {
+        "good": {
+            opsInterval: 1000,
+            reporters: [{
+                reporter: require('good-console'),
+                events: { log: '*', response: '*' }
+            }]
+        }
     }]
 };
 
