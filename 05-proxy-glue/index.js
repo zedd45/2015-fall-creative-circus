@@ -37,7 +37,7 @@ var manifest = {
             opsInterval: 1000,
             reporters: [{
                 reporter: require('good-console'),
-                events: { log: '*', response: '*' }
+                events: { log: '*', request: '*', response: '*', error: '*',  }
             }]
         }
     }]
@@ -53,6 +53,6 @@ Glue.compose(manifest, glueOptions, function (err, server) {
 
     server.start(function () {
 
-        console.log('Hapi Hapi Joi Joi!');
+        server.log('info', 'Hapi Hapi Joi Joi!');
     });
 });

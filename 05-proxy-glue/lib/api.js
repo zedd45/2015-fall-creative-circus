@@ -2,6 +2,7 @@ var Boom = require('boom');
 var Fs = require('fs');
 var Hoek = require('hoek');
 var Joi = require('joi');
+var QueryString = require('querystring');
 var Url = require('url');
 var Wreck = require('wreck');
 
@@ -11,8 +12,6 @@ var internals = {};
 
 
 exports.register = function (server, options, next) {
-
-    server.dependency('h2o2', internals.assignRoutes);
 
     server.route({
         method: 'GET',
@@ -52,7 +51,7 @@ exports.register = function (server, options, next) {
         path: '/github/repos/',
         config: {
             validate: {
-                query: Joi.object({
+                params: Joi.object({
                     q: Joi.string().required().min(2).description('search keywords, as well as any qualifiers').example('https://developer.github.com/v3/search/#search-repositories'),
                     sort: Joi.string().optional().allow(['','stars', 'forks', 'updated']).default(''),
                     order: Joi.string().optional().allow(['asc', 'desc']).default('desc')
@@ -105,30 +104,6 @@ exports.register = function (server, options, next) {
         }
     });
 
-    next();
-};
-
-
-exports.register.attributes = {
-    name: 'api-routes',
-    version: '2.0.0'
-};
-
-
-internals.assignRoutes = function (server, next) {
-
-    // server.route({
-    //     method: 'GET',
-    //     path: '/json-placeholder/posts/1',
-    //     handler: {
-    //         proxy: {
-    //             host: 'jsonplaceholder.typicode.com',
-    //             port: '80',
-    //             protocol: 'http'
-    //         }
-    //     }
-    // });
-
     server.route({
         method: 'GET',
         path: '/json-placeholder/{segments*}',
@@ -138,9 +113,10 @@ internals.assignRoutes = function (server, next) {
 
                     var baseUri = 'http://jsonplaceholder.typicode.com/';
                     var proxyPath = request.params.segments;
-                    var fullUrl = baseUri + proxyPath;
+                    // var queryString = QueryString.stringify(request.query);
+                    var fullUrl = baseUri + proxyPath; //+ queryString;
 
-                    server.log('proxy', {url: fullUrl});
+                    server.log('proxy', {url: fullUrl }); // queryString: queryString });
                     callback(null, fullUrl);
                 },
                 onResponse: function (err, res, request, reply, settings, ttl) {
@@ -162,4 +138,11 @@ internals.assignRoutes = function (server, next) {
     });
 
     next();
+};
+
+
+exports.register.attributes = {
+    name: 'api-routes',
+    version: '2.0.0',
+    dependencies: 'h2o2'
 };

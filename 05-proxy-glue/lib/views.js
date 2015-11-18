@@ -19,7 +19,7 @@ exports.register = function (server, options, next) {
             reply.view('example', {
                 title: 'example of handlebars with hapi',
                 name: 'Pea-tear-griffon',
-            })
+            });
         }
     });
 
