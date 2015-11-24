@@ -5,7 +5,8 @@ var manifest = {
     server: {},
     connections: [{
         port: 8080,
-        labels: ["server"]
+        labels: ["server"],
+        router: { stripTrailingSlash: true }
     }],
     // https://github.com/hapijs/glue#notes
     plugins: [{
@@ -42,7 +43,6 @@ var manifest = {
         }
     }]
 };
-
 
 Glue.compose(manifest, glueOptions, function (err, server) {
 

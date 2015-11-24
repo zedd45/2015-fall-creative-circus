@@ -48,7 +48,7 @@ exports.register = function (server, options, next) {
 
     server.route({
         method: 'GET',
-        path: '/github/repos/',
+        path: '/github/repos',
         config: {
             validate: {
                 params: Joi.object({
@@ -143,6 +143,5 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'api-routes',
-    version: '2.0.0',
-    dependencies: 'h2o2'
+    version: '2.0.0'
 };
