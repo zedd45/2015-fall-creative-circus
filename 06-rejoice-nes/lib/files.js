@@ -31,7 +31,7 @@ exports.register = function (server, options, next) {
 
     server.route({
         method: 'GET',
-        path: '/assets/bundle.js',
+        path: '/assets/websocket-client.js',
         config: {
             handler: {
                 file: __dirname + '/node_modules/nes/lib/client.js'
@@ -45,5 +45,5 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'static-files',
-    version: '1.0.2'
+    version: '1.1.0'
 };

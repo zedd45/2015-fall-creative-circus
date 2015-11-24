@@ -8,7 +8,7 @@ exports.register = function (server, options, next) {
         path: '/chatroom',
         config: {
             id: 'chatroom',
-            handler: (request, reply) => {
+            handler: function (request, reply) {
 
                 server.log('new message in: /chatroom');
 
