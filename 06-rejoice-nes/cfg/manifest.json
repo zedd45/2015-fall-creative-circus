@@ -20,6 +20,8 @@
     }, {
         "./misc": {}
     }, {
+        "./nes": {}
+    }, {
         "./views": [{
             "routes": {
                 "prefix": "/views"

@@ -18,6 +18,8 @@ var manifest = {
     }, {
         "h2o2": {}
     }, {
+        "nes": {}
+    }, {
         "./files": {}
     }, {
         "./misc": {}
@@ -34,6 +36,8 @@ var manifest = {
             }
         }]
     }, {
+        "./websockets": {}
+    }, {
         "good": {
             opsInterval: 1000,
             reporters: [{
@@ -43,7 +47,6 @@ var manifest = {
         }
     }]
 };
-
 
 Glue.compose(manifest, glueOptions, function (err, server) {
 
