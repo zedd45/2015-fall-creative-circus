@@ -1,0 +1,44 @@
+{
+    "server": {},
+    "connections": [{
+        "port": 8080,
+        "labels": ["server"],
+        "router": {
+            "stripTrailingSlash": true
+        }
+    }],
+    "plugins": [{
+        "blipp": {}
+    }, {
+        "inert": {}
+    }, {
+        "vision": {}
+    }, {
+        "h2o2": {}
+    }, {
+        "./files": {}
+    }, {
+        "./misc": {}
+    }, {
+        "./views": [{
+            "routes": {
+                "prefix": "/views"
+            }
+        }]
+    }, {
+        "./api": [{
+            "routes": {
+                "prefix": "/api"
+            }
+        }]
+    }, {
+        "good": {
+            "opsInterval": 5000,
+            "requestHeaders": true,
+            "reporters": [{
+                "reporter": "good-console",
+                "events": { "response": "*", "ops": "*", "log": "*", "error": "*" }
+            }]
+        }
+    }]
+}
