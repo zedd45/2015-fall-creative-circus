@@ -14,31 +14,58 @@
     </div>
 
     <div class="row">
+
       <form>
-          <input class="nes-chat-input" autocomplete="off" />
-          <button>Send</button>
+        <div class="form-group">
+          <label>Username</label>
+          <input class="nes-chat-username form-control" />
+        </div>
+
+        <div class="form-group">
+          <label>Message</label>
+          <input class="nes-chat-input form-control" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary">Send</button>
+        </div>
       </form>
+
     </div>
 
     <div class="row">
       <div class="panel">
         <div class="panel-body">
-          <ul class="nes-chat-messages"><!-- messages go here --></ul>
+          <ul class="nes-chat-messages list-unstyled"><!-- messages go here --></ul>
         </div>
       </div>
     </div>
 
   </div><!--container-->
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
   <script src="/assets/websocket-client.js"></script>
   <script>
+    Handlebars.registerHelper("formatTime", function(unixTimestamp) {
+
+        // return just the timepart (because this is chat)
+        debugger;
+        return moment(unixTimestamp * 1000).format("h:mm a");
+    });
+  </script>
+  <script id="nes-message-tmpl" type="text/x-handlebars-template">
+    <span class="text-primary">{{username}}</span> (<span class="text-warning">{{formatTime timestamp}}</span>): {{message}}
+  </script>
+  <script>
+
       // Load the Websocket client library
       var client = new nes.Client('ws://localhost:8080');
 
       // Set an onConnect listener & connect to the service
       client.onConnect = function () {
 
-          console.log('Service Connected');
+          console.log('Chat Connected');
       };
 
       client.connect(function (err) {
@@ -53,8 +80,13 @@
           console.error(err);
         }
 
+        var source = document.querySelector("#nes-message-tmpl").innerHTML;
+        var template = Handlebars.compile(source);
+        var contents = template(msg);
+
         var li = document.createElement('li');
-        li.innerText = msg.message;
+        li.innerHTML = contents;
+
         document.querySelector('ul.nes-chat-messages').appendChild(li);
       });
 
@@ -63,13 +95,16 @@
 
         event.preventDefault();
 
-        var textInput = document.querySelector('input.nes-chat-input');
+        var chatMessage = document.querySelector('input.nes-chat-input');
+        var username = document.querySelector('input.nes-chat-username');
 
         var message = {
           method: 'POST',
           path: '/chat',
           payload: {
-            message: textInput.value
+            message: chatMessage.value,
+            timestamp: moment().unix(),
+            username: username.value && username.value.trim() || 'anonymous'
           }
         }
 
@@ -78,15 +113,8 @@
           console.log(arguments);
         });
 
-        textInput.value = "";
+        chatMessage.value = "";
         return false;
-      }
-
-      // Get the query parameter to use as Room ID
-      function getQueryParameter(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
       }
 
   </script>

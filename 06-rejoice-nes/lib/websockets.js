@@ -12,10 +12,17 @@ exports.register = function (server, options, next) {
             id: 'chat',
             handler: function (request, reply) {
 
+                var payload = request.payload;
+
                 server.log('new message in: /chat', { message: request.payload.message });
 
-                server.publish('/chatroom-subscription', { message: request.payload.message });
-                return reply('message recieved');
+                server.publish('/chatroom-subscription', {
+                    message: payload.message,
+                    timestamp: payload.timestamp,
+                    username: payload.username
+                });
+
+                return reply('your chat message was processed');
             },
             description: 'Chat message handler'
         }
