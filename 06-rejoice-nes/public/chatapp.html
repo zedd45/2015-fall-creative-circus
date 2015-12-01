@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat App</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+</head>
+<body style="margin: 20px;">
+  <div class="container-fluid">
+
+    <div class="row">
+      <h3>
+        Welcome to Chat
+      </h3>
+    </div>
+
+    <div class="row">
+      <form>
+          <input class="nes-chat-input" autocomplete="off" />
+          <button>Send</button>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="panel">
+        <div class="panel-body">
+          <ul class="nes-chat-messages"><!-- messages go here --></ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!--container-->
+
+  <script src="/assets/websocket-client.js"></script>
+  <script>
+      // Load the Websocket client library
+      var client = new nes.Client('ws://localhost:8080');
+
+      // Set an onConnect listener & connect to the service
+      client.onConnect = function () {
+
+          console.log('Service Connected');
+      };
+
+      client.connect(function (err) {
+
+          console.log(err);
+      });
+
+      // Subscribe to a websocket channel
+      client.subscribe('/chatroom-subscription', function(err, msg) {
+
+        if (err) {
+          console.error(err);
+        }
+
+        var li = document.createElement('li');
+        li.innerText = msg.message;
+        document.querySelector('ul.nes-chat-messages').appendChild(li);
+      });
+
+      // Send Messages on form submit
+      document.querySelector('form').onsubmit = function(event){
+
+        event.preventDefault();
+
+        var textInput = document.querySelector('input.nes-chat-input');
+
+        var message = {
+          method: 'POST',
+          path: '/chat',
+          payload: {
+            message: textInput.value
+          }
+        }
+
+        client.request(message, function(err, res) {
+
+          console.log(arguments);
+        });
+
+        textInput.value = "";
+        return false;
+      }
+
+      // Get the query parameter to use as Room ID
+      function getQueryParameter(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
+  </script>
+</body>
+</html>

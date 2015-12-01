@@ -29,17 +29,6 @@ exports.register = function (server, options, next) {
         }
     });
 
-    server.route({
-        method: 'GET',
-        path: '/assets/websocket-client.js',
-        config: {
-            handler: {
-                file: __dirname + '/node_modules/nes/lib/client.js'
-            },
-            description: 'websocket client library'
-        }
-    });
-
     next();
 };
 
