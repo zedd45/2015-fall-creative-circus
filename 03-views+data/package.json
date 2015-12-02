@@ -10,6 +10,11 @@
   },
   "author": "Chris Keen <christopher.keen@gmail.com> (http://keenwebconcepts.com/)",
   "license": "ISC",
+  "bugs": { "url" : "https://github.com/zedd45/2015-fall-creative-circus/issues" },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/zedd45/2015-fall-creative-circus.git"
+  },
   "dependencies": {
     "blipp": "^2.3.0",
     "boom": "^2.9.0",
@@ -26,5 +31,9 @@
     "lab": "^6.2.0",
     "nodemon": "^1.7.1",
     "purdy": "^1.4.1"
+  },
+  "engines": {
+    "node" : "~4.1.2",
+    "npm": "~2.14.4"
   }
 }
