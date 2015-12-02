@@ -1,4 +1,5 @@
 var Path = require('path');
+var Moment = require('moment');
 
 exports.register = function (server, options, next) {
 
@@ -9,7 +10,7 @@ exports.register = function (server, options, next) {
         path: '/chat',
         config: {
             // https://github.com/hapijs/nes/blob/master/PROTOCOL.md
-            id: 'chat',
+            // id: 'chat',
             handler: function (request, reply) {
 
                 var payload = request.payload;
@@ -18,7 +19,7 @@ exports.register = function (server, options, next) {
 
                 server.publish('/chatroom-subscription', {
                     message: payload.message,
-                    timestamp: payload.timestamp,
+                    timestamp: Moment().utc(),
                     username: payload.username
                 });
 
@@ -41,7 +42,6 @@ exports.register = function (server, options, next) {
         }
     });
 
-    console.log(__dirname + '/public/chatapp.html')
 
     server.route({
         method: 'GET',
@@ -60,6 +60,6 @@ exports.register = function (server, options, next) {
 
 exports.register.attributes = {
     name: 'websockets',
-    version: '1.0.0',
+    version: '1.1.0',
     dependencies: 'nes'
 };

@@ -50,8 +50,7 @@
     Handlebars.registerHelper("formatTime", function(unixTimestamp) {
 
         // return just the timepart (because this is chat)
-        debugger;
-        return moment(unixTimestamp * 1000).format("h:mm a");
+        return moment(unixTimestamp).format("h:mm a");
     });
   </script>
   <script id="nes-message-tmpl" type="text/x-handlebars-template">
@@ -70,7 +69,9 @@
 
       client.connect(function (err) {
 
-          console.log(err);
+          if (err) {
+            console.error(err);
+          }
       });
 
       // Subscribe to a websocket channel
@@ -82,16 +83,16 @@
 
         var source = document.querySelector("#nes-message-tmpl").innerHTML;
         var template = Handlebars.compile(source);
-        var contents = template(msg);
+        var result = template(msg);
 
         var li = document.createElement('li');
-        li.innerHTML = contents;
+        li.innerHTML = result;
 
         document.querySelector('ul.nes-chat-messages').appendChild(li);
       });
 
       // Send Messages on form submit
-      document.querySelector('form').onsubmit = function(event){
+      document.querySelector('form').onsubmit = function(event) {
 
         event.preventDefault();
 
@@ -103,7 +104,6 @@
           path: '/chat',
           payload: {
             message: chatMessage.value,
-            timestamp: moment().unix(),
             username: username.value && username.value.trim() || 'anonymous'
           }
         }
